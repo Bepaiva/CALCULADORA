@@ -1,0 +1,127 @@
+class calculator {
+    constructor(previousOperandTextElement, currentOperandTextElement) {
+        this.previousOperandTextElement = previousOperandTextElement
+    this.currentOperandTextElement = currentOperandTextElement
+    }
+
+clear() {
+         this.currentOperand = ''
+        this.previousOperand = ''
+        this.operation = undefined
+    }
+
+delete() {
+    this.currentOperand = this.currentOperand.toString().slice(0,-1)
+
+    }
+
+appendNumber (number) {
+        if (number === '.' && this.currentOperand.includes ('.')) return
+        this.currentOperand = this.currentOperand.toString () + number.toString()
+    }
+    
+chooseOperation (Operation) {
+        if (this.currentOperand === '') return
+        if (this.previousOperand !== '') {
+            this.compute()
+        }
+        this.operation = operation
+        this.previousOperand = this.currentOperand
+        this.currentOperand = ''
+    }
+
+compute () {
+    let computation 
+    const prev = parseFloat(this.previousOperand)
+    const current = parseFloat(this.currentOperand)
+    if (isNaN(prev) || isNan(current)) return
+    switch (this.operation) {
+        case '+': 
+            computation = prev + current
+            break
+        case '-': 
+            computation = prev - current
+            break
+        case '*': 
+            computation = prev * current
+            break
+        case '÷': 
+            computation = prev / current
+            break
+        default:
+            return 
+      }
+      this.currentOperand = computation
+      this.operation = undefined
+      this.previousOperand = ''    
+    }
+    
+getiDisplayNumber (number) {
+    const stringNumber = number.toString()
+    const integerDigits = parseFloat(stringNumber.split('.')[0])
+    const decimalDigits = parseFloat(stringNumber.split('.')[1])
+    let integerDisplay
+    if (isNaN(integerDigits)) {
+         }     else {
+            integerDisplay = integerDigits.toLocaleString('en', {
+                maximumFractionDigits: 0})
+        }
+        if (decimalDigists != null) {
+            return `${integerDisplay}.${decimalDigits}`
+        } else {
+            return integerDisplay
+        }
+    }
+    
+
+updateDisplay (calculator) {
+    this.currentOperandTextElement.innerText = 
+      this.getiDisplayNumber(this.currentOperand)
+    if (this.operation != null) {
+      this.previousOperandTextElement.innerText = 
+         `${this.getiDisplayNumber(this.previousOperand)} ${this.operation}`
+        } else {
+            this.previousOperandTextElement.innerText = '' 
+        }
+    }
+}
+
+
+const numberButtons = document.querySelectorAll ('[data-number]')
+const operationButtons = document.querySelectorAll('[data-operand]')
+const deleteButton = document.querySelectorAll('[data-delete]')
+const allClearButton = document.querySelectorAll('[data-all-clear]')
+const previousOperandTextElement = document.querySelectorAll('[data-previous-operand]')
+const currentOperandTextElement = document.querySelectorAll('[data-current-operand]')
+
+const calculator = new calculator(previousOperandTextElement, currentOperandTextElement)
+
+numberButtons.forEach(button=> {
+    button.addEventListener('click', () => { 
+    calculator.appendNumber(button.innerText)
+    calculator.updateDisplay()
+})
+})
+
+operationButtons.forEach(button=> {
+    button.addEventListener('click', () => { 
+    calculator.chooseOperation(button.innerText)
+    calculator.updateDisplay()
+})
+})
+
+equalsButton.addEventListener('click', button => {
+  calculator.commmpute()
+  calculator.updateDisplay()  
+})
+
+allClearButton.addEventListener('click', button => {
+    calculator.clear()
+    calculator.updateDisplay()  
+  })
+
+
+  deleteButton.addEventListener('click', button => {
+    calculator.delete()
+    calculator.updateDisplay()  
+  })
