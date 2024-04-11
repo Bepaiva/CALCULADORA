@@ -66,7 +66,7 @@ getiDisplayNumber (number) {
             integerDisplay = integerDigits.toLocaleString('en', {
                 maximumFractionDigits: 0})
         }
-        if (decimalDigists != null) {
+        if (decimalDigits != null) {
             return `${integerDisplay}.${decimalDigits}`
         } else {
             return integerDisplay
